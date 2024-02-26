@@ -25,6 +25,15 @@ if (app.Environment.IsDevelopment())
 app.UseSwagger();
 app.UseSwaggerUI();
 
+if (app.Environment.IsProduction())
+{
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog Pessoal - v1");
+        options.RoutePrefix = string.Empty;
+    });
+}
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
