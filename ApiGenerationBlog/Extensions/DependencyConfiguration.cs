@@ -7,14 +7,14 @@ namespace ApiGenerationBlog.Extensions
 {
     public static class DependencyConfiguration
     {
-        public static void ConfigureServicesDependecies(IServiceCollection services)
+        public static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IThemeService, ThemeService>();
         }
 
-        public static void ConfigureRepositoriesDependencies(IServiceCollection repositories)
+        public static void AddRepositories(this IServiceCollection repositories)
         {
             repositories.AddScoped<IUserRepository, UserRepository>();
             repositories.AddScoped<IPostRepository, PostRepository>();

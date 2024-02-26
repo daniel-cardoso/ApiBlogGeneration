@@ -10,9 +10,8 @@ builder.Services.AddDbContext<AppDbContext>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-DependencyConfiguration.ConfigureServicesDependecies(builder.services);
-DependencyConfiguration.ConfigureRepositoriesDependencies(services);
-
+builder.Services.AddServices();
+builder.Services.AddRepositories();
 
 var app = builder.Build();
 

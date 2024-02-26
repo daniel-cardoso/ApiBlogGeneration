@@ -9,12 +9,10 @@ namespace ApiGenerationBlog.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         
-        [Required(ErrorMessage ="Campo Obrigatório!")]
+        [Required(ErrorMessage ="Required Field!")]
         [MinLength(3)]
         public string Description { get; set; }
 
-        [InverseProperty("Theme")]
-        public ICollection<Post> Posts { get; set; }
 
     }
 }

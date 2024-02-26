@@ -31,12 +31,18 @@ namespace ApiGenerationBlog.Repository
 
         public IEnumerable<Post> GetAll()
         {
-            return _context.Posts.ToList();
+            return _context.Posts.
+                Include(p => p.Theme).
+                Include(p => p.User).
+                ToList();
         }
 
         public Post GetById(int id)
         {
-            return _context.Posts.Find(id);
+            return _context.Posts.
+                Include(p => p.Theme).
+                Include(p => p.User).
+                First(i => i.Id == id);
         }
 
         public void Update(Post Post)
