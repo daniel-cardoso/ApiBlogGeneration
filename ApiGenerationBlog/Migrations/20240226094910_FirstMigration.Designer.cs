@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiGenerationBlog.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240225213057_migration1")]
-    partial class migration1
+    [Migration("20240226094910_FirstMigration")]
+    partial class FirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,13 +92,13 @@ namespace ApiGenerationBlog.Migrations
             modelBuilder.Entity("ApiGenerationBlog.Models.Post", b =>
                 {
                     b.HasOne("ApiGenerationBlog.Models.Theme", "Theme")
-                        .WithMany("Posts")
+                        .WithMany()
                         .HasForeignKey("ThemeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ApiGenerationBlog.Models.User", "User")
-                        .WithMany("Posts")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -106,16 +106,6 @@ namespace ApiGenerationBlog.Migrations
                     b.Navigation("Theme");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ApiGenerationBlog.Models.Theme", b =>
-                {
-                    b.Navigation("Posts");
-                });
-
-            modelBuilder.Entity("ApiGenerationBlog.Models.User", b =>
-                {
-                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

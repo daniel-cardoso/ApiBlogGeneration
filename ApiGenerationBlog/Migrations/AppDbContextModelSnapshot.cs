@@ -89,13 +89,13 @@ namespace ApiGenerationBlog.Migrations
             modelBuilder.Entity("ApiGenerationBlog.Models.Post", b =>
                 {
                     b.HasOne("ApiGenerationBlog.Models.Theme", "Theme")
-                        .WithMany("Posts")
+                        .WithMany()
                         .HasForeignKey("ThemeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ApiGenerationBlog.Models.User", "User")
-                        .WithMany("Posts")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -103,16 +103,6 @@ namespace ApiGenerationBlog.Migrations
                     b.Navigation("Theme");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ApiGenerationBlog.Models.Theme", b =>
-                {
-                    b.Navigation("Posts");
-                });
-
-            modelBuilder.Entity("ApiGenerationBlog.Models.User", b =>
-                {
-                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }
