@@ -1,41 +1,58 @@
-﻿using ApiGenerationBlog.Models;
+﻿using ApiGenerationBlog.DTOs.Input;
+using ApiGenerationBlog.DTOs.Output;
+using ApiGenerationBlog.Models;
 using ApiGenerationBlog.Repository.Interfaces;
 using ApiGenerationBlog.Services.Interfaces;
+using AutoMapper;
 
 namespace ApiGenerationBlog.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
-        public void Add(User user)
+        public async Task<UserOutputDto?> GetById(int id)
         {
-            _userRepository.Add(user);
+            var userOutputDto = await _userRepository.GetById(id);
+            return _mapper.Map<UserOutputDto>(userOutputDto);
         }
 
-        public void Delete(int id)
+        public async Task<IEnumerable<UserOutputDto?>> GetAll()
         {
-            _userRepository.Delete(id);
+            if (!_userRepository.GetAll().Result.Any())
+                return Enumerable.Empty<UserOutputDto>();
+
+            var users = await _userRepository.GetAll();
+            var usersOutputDto = _mapper.Map<IEnumerable<UserOutputDto>>(users);
+            return usersOutputDto;
         }
 
-        public IEnumerable<User> GetAll()
+        public async Task<UserOutputDto> Add(UserInputDto userInputDto)
         {
-            return _userRepository.GetAll();
+            var userModel = _mapper.Map<User>(userInputDto);
+            var temp = await _userRepository.Add(userModel);
+            var userOutputDto = _mapper.Map<UserOutputDto>(temp);
+            return userOutputDto;
         }
 
-        public User GetById(int id)
+        public async Task<UserOutputDto> Update(UserInputDto userInputDto)
         {
-            return _userRepository.GetById(id);
+            var userModel = _mapper.Map<User>(userInputDto);
+            var temp = await _userRepository.Update(userModel);
+            var userOutputDto = _mapper.Map<UserOutputDto>(temp);
+            return userOutputDto;
         }
 
-        public void Update(User user)
+        public async Task Delete(int id)
         {
-            _userRepository.Update(user);
+            await _userRepository.Delete(id);
         }
     }
 }

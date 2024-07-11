@@ -4,10 +4,10 @@ namespace ApiGenerationBlog.Repository.Interfaces
 {
     public interface IThemeRepository
     {
-        Theme GetById(int id);
-        IEnumerable<Theme> GetAll();
-        void Add(Theme theme);
-        void Update(Theme theme);
-        void Delete(int id);
+        Task<Theme?> GetById(int id);
+        Task<IEnumerable<Theme?>> GetAll();
+        Task<Theme?> Add(Theme theme);
+        Task<Theme> Update(Theme theme);
+        Task Delete(int id);
     }
 }

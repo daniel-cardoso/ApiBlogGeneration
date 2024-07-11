@@ -1,41 +1,69 @@
-﻿using ApiGenerationBlog.Models;
+﻿using ApiGenerationBlog.DTOs.Input;
+using ApiGenerationBlog.DTOs.Output;
+using ApiGenerationBlog.DTOs.Update;
+using ApiGenerationBlog.Models;
 using ApiGenerationBlog.Repository.Interfaces;
 using ApiGenerationBlog.Services.Interfaces;
+using AutoMapper;
 
 namespace ApiGenerationBlog.Services
 {
     public class ThemeService : IThemeService
     {
         private readonly IThemeRepository _themeRepository;
+        private readonly IMapper _mapper;
 
-        public ThemeService(IThemeRepository themeRepository)
+
+        public ThemeService(IThemeRepository themeRepository, IMapper mapper)
         {
             _themeRepository = themeRepository;
+            _mapper = mapper;
         }
 
-        public void Add(Theme theme)
+        public async Task<ThemeOutputDto?> GetById(int id)
         {
-            _themeRepository.Add(theme);
+            var theme = await _themeRepository.GetById(id);
+
+            return _mapper.Map<ThemeOutputDto?>(theme);
         }
 
-        public void Delete(int id)
+        public async Task<IEnumerable<ThemeOutputDto?>> GetAll()
         {
-            _themeRepository.Delete(id);
+            if (!_themeRepository.GetAll().Result.Any())
+                return Enumerable.Empty<ThemeOutputDto>();
+
+            var themes = await _themeRepository.GetAll();
+            var themesOutputDto = _mapper.Map<IEnumerable<ThemeOutputDto>>(themes);
+            return themesOutputDto;
         }
 
-        public IEnumerable<Theme> GetAll()
+        public async Task<ThemeOutputDto> Add(ThemeInputDto themeInputDto)
         {
-            return _themeRepository.GetAll();
+            var themeModel = _mapper.Map<Theme>(themeInputDto);
+            var temp = await _themeRepository.Add(themeModel);
+
+            var themeOutputDto = _mapper.Map<ThemeOutputDto>(temp);
+            return themeOutputDto;
         }
 
-        public Theme GetById(int id)
+        public async Task<ThemeOutputDto> Update(int id, ThemeUpdateDto themeUpdateDto)
         {
-            return _themeRepository.GetById(id);
+            //var themeModel = _mapper.Map<Theme>(themeUpdateDto, opt => opt.Items["Id"] = id);
+            var themeModel = _mapper.Map<Theme>(themeUpdateDto, opt => opt.AfterMap((src, dest) => { dest.Id = id; }));
+            var temp = await _themeRepository.Update(themeModel);
+            var themeOutputDto = _mapper.Map<ThemeOutputDto>(temp);
+            return themeOutputDto;
         }
 
-        public void Update(Theme theme)
+        public async Task Delete(int id)
         {
-            _themeRepository.Update(theme);
+            await _themeRepository.Delete(id);
         }
+
+        // TODO: VER SE VOU USAR ESSE MÉTODO NA CONTROLLER OU AQUI NA SERVICE
+        /*private bool ThemeExists(int id)    
+        {
+            return _themeRepository.GetAll().Result.Any(e => e.Id == id);
+        }*/
     }
 }

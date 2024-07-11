@@ -1,3 +1,4 @@
+using ApiGenerationBlog.AutoMapper;
 using ApiGenerationBlog.DataContext;
 using ApiGenerationBlog.Extensions;
 
@@ -12,6 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddServices();
 builder.Services.AddRepositories();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 var app = builder.Build();
 
@@ -29,7 +31,7 @@ if (app.Environment.IsProduction())
 {
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog Pessoal - v1");
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiGenerationBlog - v1");
         options.RoutePrefix = string.Empty;
     });
 }

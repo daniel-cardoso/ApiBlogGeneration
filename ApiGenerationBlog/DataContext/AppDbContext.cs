@@ -15,7 +15,7 @@ namespace ApiGenerationBlog.DataContext
 
         public DbSet<User> Users { get; set; }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<Theme> Themes { get; set; }
+        public DbSet<Theme?> Themes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite("DataSource=app.db;Cache=Shared");

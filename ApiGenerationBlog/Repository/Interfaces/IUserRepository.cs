@@ -4,10 +4,10 @@ namespace ApiGenerationBlog.Repository.Interfaces
 {
     public interface IUserRepository
     {
-        User GetById(int id);
-        IEnumerable<User> GetAll();
-        void Add(User user);
-        void Update(User user);
-        void Delete(int id);
+        Task<User?> GetById(int id);
+        Task<IEnumerable<User?>> GetAll();
+        Task<User> Add(User user);
+        Task<User> Update(User user);
+        Task Delete(int id);
     }
 }

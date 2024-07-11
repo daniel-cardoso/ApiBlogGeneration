@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiGenerationBlog.Repository
 {
-    public class ThemeRepository:IThemeRepository
+    public class ThemeRepository : IThemeRepository
     {
         private readonly AppDbContext _context;
 
@@ -13,36 +13,41 @@ namespace ApiGenerationBlog.Repository
         {
             _context = dbContext;
         }
-        public void Add(Theme theme)
+        public async Task<Theme> Add(Theme theme)
         {
-            _context.Themes.Add(theme);
-            _context.SaveChanges();
+            await _context.Themes.AddAsync(theme);
+            await _context.SaveChangesAsync();
+            return theme;
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            var theme = _context.Themes.Find(id);
+            var theme = await _context.Themes.FindAsync(id);
             if (theme != null)
             {
                 _context.Themes.Remove(theme);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
-        public IEnumerable<Theme> GetAll()
+        public async Task<IEnumerable<Theme?>> GetAll()
         {
-            return _context.Themes.ToList();
+            return await _context.Themes.ToListAsync();
         }
 
-        public Theme GetById(int id)
+        public async Task<Theme?> GetById(int id)
         {
-            return _context.Themes.Find(id);
+            //TODO ENTENDER O CONTEXTO DO TRACKING DE ENTIDADES E COMO IREI ABORDAR 
+            //return await _context.Themes.FindAsync(id);
+            return await _context.Themes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public void Update(Theme theme)
+        public async Task<Theme> Update(Theme theme)
         {
+            _context.Attach(theme);
             _context.Entry(theme).State = EntityState.Modified;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            return theme;
         }
     }
 }

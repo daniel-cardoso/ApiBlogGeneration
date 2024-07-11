@@ -1,0 +1,81 @@
+[
+  {
+    "ContainingType": "ApiGenerationBlog.Controllers.ThemesController",
+    "Method": "GetThemes",
+    "RelativePath": "api/Themes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ApiGenerationBlog.Controllers.ThemesController",
+    "Method": "PostTheme",
+    "RelativePath": "api/Themes",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "themeInputDto",
+        "Type": "ApiGenerationBlog.DTOs.Input.ThemeInputDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ApiGenerationBlog.Controllers.ThemesController",
+    "Method": "GetTheme",
+    "RelativePath": "api/Themes/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ApiGenerationBlog.Controllers.ThemesController",
+    "Method": "PutTheme",
+    "RelativePath": "api/Themes/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "themeUpdateDto",
+        "Type": "ApiGenerationBlog.DTOs.Update.ThemeUpdateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ApiGenerationBlog.Controllers.ThemesController",
+    "Method": "DeleteTheme",
+    "RelativePath": "api/Themes/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

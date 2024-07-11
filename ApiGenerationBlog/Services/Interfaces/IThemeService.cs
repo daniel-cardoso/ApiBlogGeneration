@@ -1,13 +1,15 @@
-﻿using ApiGenerationBlog.Models;
+﻿using ApiGenerationBlog.DTOs.Input;
+using ApiGenerationBlog.DTOs.Output;
+using ApiGenerationBlog.DTOs.Update;
 
 namespace ApiGenerationBlog.Services.Interfaces
 {
     public interface IThemeService
     {
-        Theme GetById(int id);
-        IEnumerable<Theme> GetAll();
-        void Add(Theme theme);
-        void Update(Theme theme);
-        void Delete(int id);
+        Task<ThemeOutputDto?> GetById(int id);
+        Task<IEnumerable<ThemeOutputDto?>> GetAll();
+        Task<ThemeOutputDto> Add(ThemeInputDto themeInputDto);
+        Task<ThemeOutputDto> Update(int id, ThemeUpdateDto themeUpdateDto);
+        Task Delete(int id);
     }
 }

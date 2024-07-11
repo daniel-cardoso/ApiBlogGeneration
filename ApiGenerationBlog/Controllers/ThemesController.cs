@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ApiGenerationBlog.DataContext;
-using ApiGenerationBlog.Models;
 using ApiGenerationBlog.Services.Interfaces;
-using ApiGenerationBlog.Services;
-using ApiGenerationBlog.DTOs;
+using ApiGenerationBlog.DTOs.Input;
+using ApiGenerationBlog.DTOs.Update;
 
 namespace ApiGenerationBlog.Controllers
 {
@@ -21,82 +18,96 @@ namespace ApiGenerationBlog.Controllers
 
         // GET: api/Themes
         [HttpGet]
-        public IActionResult GetThemes()
+        public async Task<ActionResult> GetThemes()
         {
-            if (_themeService.GetAll() == null)
+            try
             {
-                return NotFound();
+                return Ok(await _themeService.GetAll());
             }
-            return Ok(_themeService.GetAll().ToList());
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500);
+            }
         }
 
         // GET: api/Themes/5
         [HttpGet("{id}")]
-        public IActionResult GetTheme(int id)
+        public async Task<ActionResult> GetTheme(int id)
         {
-            if (!ThemeExists(id))
-            {
-                return NotFound();
-            }
-            var thm = _themeService.GetById(id);
-
-            return Ok(thm);
-        }
-
-        // PUT: api/Themes/5
-        [HttpPut("{id}")]
-        public IActionResult PutTheme(int id, ThemeDTO themeDTO)
-        {
-            if (!ThemeExists(id))
-            {
-                return NotFound();
-            }
-
-            var thm = _themeService.GetById(id);
-
-            thm.Description = themeDTO.Description;
-
             try
             {
-                _themeService.Update(thm);
+                var thm = await _themeService.GetById(id);
+                if (thm is null) return NotFound();
+
+                return Ok(thm);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                Console.WriteLine(ex.Message);
+                return StatusCode(500);
             }
-
-            return Ok(thm);
         }
 
         // POST: api/Themes
         [HttpPost]
-        public IActionResult PostTheme(ThemeDTO themeDTO)
+        public async Task<ActionResult> PostTheme(ThemeInputDto themeInputDto)
         {
-            if (themeDTO.Description.Trim().Length < 3)
+            try
             {
-                return BadRequest("Description minimum lenght: 3");
+                var themeOutputDto = await _themeService.Add(themeInputDto);
+                return CreatedAtAction("GetTheme", new {id = themeOutputDto.Id}, themeOutputDto);
             }
-            var theme = new Theme();
-            theme.Description = themeDTO.Description.Trim();
-            _themeService.Add(theme);
-            return CreatedAtAction("GetTheme", new { id = theme.Id }, theme);
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500);
+            }
+        }
+
+        // PUT: api/Themes/5
+        [HttpPut("{id}")]
+        public async Task<ActionResult> PutTheme(int id, ThemeUpdateDto themeUpdateDto)
+        {
+            try
+            {
+                var thm = await _themeService.GetById(id);
+                if (thm is null)
+                    return NotFound();
+
+                var themeOutputDto = await _themeService.Update(id, themeUpdateDto);
+                return Ok(themeOutputDto);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500);
+            }
         }
 
         // DELETE: api/Themes/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteTheme(int id)
+        public async Task<ActionResult> DeleteTheme(int id)
         {
-            if (!ThemeExists(id))
+            try
             {
-                return NotFound();
-            }
-            _themeService.Delete(id);
-            return NoContent();
-        }
+                var thm = await _themeService.GetById(id);
+                if (thm is null)
+                    return NotFound();
 
-        private bool ThemeExists(int id)
-        {
-            return (_themeService.GetAll()?.Any(e => e.Id == id)).GetValueOrDefault();
+                await _themeService.Delete(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500);
+            }
         }
+        //TODO: VOU USAR OU VOU DELETAR? 
+        /*private bool ThemeExists(int id)
+        {
+            return _themeService.GetAll().Result.Any(e => e.Id == id);
+        }*/
     }
 }

@@ -1,13 +1,14 @@
-﻿using ApiGenerationBlog.Models;
+﻿using ApiGenerationBlog.DTOs.Input;
+using ApiGenerationBlog.DTOs.Output;
 
 namespace ApiGenerationBlog.Services.Interfaces
 {
     public interface IUserService
     {
-        User GetById(int id);
-        IEnumerable<User> GetAll();
-        void Add(User user);
-        void Update(User user);
-        void Delete(int id);
+        Task <UserOutputDto?> GetById(int id);
+        Task<IEnumerable<UserOutputDto?>> GetAll();
+        Task<UserOutputDto> Add(UserInputDto userInputDto);
+        Task<UserOutputDto> Update(UserInputDto userInputDto);
+        Task Delete(int id);
     }
 }
